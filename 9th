@@ -1,0 +1,89 @@
+Java Program10
+A Java program to create and read the cookie for the given cookie name as “EMPID” and its value as 
+“AN2356”.
+
+
+
+SetCookieServlet.java
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+@WebServlet("/SetCookieServlet")
+public class SetCookieServlet extends HttpServlet {
+ private static final long serialVersionUID = 1L;
+ protected void doGet(HttpServletRequest request, 
+HttpServletResponse response) throws ServletException, 
+IOException {
+ // Create a cookie with name "EMPID" and value 
+"AN2356"
+ Cookie empIdCookie = new Cookie("EMPID", "AN2356");
+ // Set the maximum age of the cookie in seconds 
+(optional)
+ empIdCookie.setMaxAge(60 * 60 * 24); // 1 day
+ // Add the cookie to the response
+ response.addCookie(empIdCookie);
+ // Inform the client that the cookie has been set
+ response.getWriter().println("Cookie 'EMPID' set 
+with value 'AN2356'.");
+ response.setContentType("text/html");
+ PrintWriter out=response.getWriter();
+ out.println("<!DOCTYPE html>");
+ out.println("<html>");
+ out.println(" <head>");
+ out.println("<title>Insert title here</title>");
+ out.println("</head>");
+ out.println("<body>");
+ out.println("<h1><a href='ReadCookieServlet'>Go to 
+Read</a></h1> ");
+ out.println("</body>");
+ out.println("</html>"); 
+ 
+ }
+}
+
+
+
+ReadCookieServlet.java
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+@WebServlet("/ReadCookieServlet")
+public class ReadCookieServlet extends HttpServlet {
+ private static final long serialVersionUID = 1L;
+ protected void doGet(HttpServletRequest request, 
+HttpServletResponse response) throws ServletException, 
+IOException {
+ // Get an array of Cookies from the request
+ Cookie[] cookies = request.getCookies();
+ // Initialize a variable to store the EMPID value
+ String empIdValue = null;
+ // Check if cookies are not null
+ if (cookies != null) {
+ // Iterate through the cookies to find the one 
+with name "EMPID"
+ for (Cookie cookie : cookies) {
+ if (cookie.getName().equals("EMPID")) {
+ empIdValue = cookie.getValue();
+ break;
+ }
+ }
+ }
+ // Display the EMPID value or an appropriate message
+ if (empIdValue != null) {
+ response.getWriter().println("EMPID cookie 
+value: " + empIdValue);
+ } else {
+ response.getWriter().println("EMPID cookie not 
+found.");
+ }
+ }
+}
