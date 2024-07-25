@@ -1,0 +1,108 @@
+Java Program9
+A servlet program to display the name, USN, and total marks by accepting student detail
+
+
+Student.html
+<!DOCTYPE html>
+<html>
+<body>
+<form method="post" action="Student">
+    <fieldset>
+        <legend><b><i>Enter Student Details :</i></b></legend>
+        Enter Roll No :&nbsp <input type="text" name="txtsno"><br><br>
+        Enter Name :&nbsp &nbsp <input type="text" name="txtnm"><br><br>
+        Enter class :&nbsp &nbsp &nbsp <input type="text" name="txtclass"><br><br>
+        <fieldset>
+            <legend><b><i>Enter Student Marks Details :</i></b></legend>
+            Subject 1 :&nbsp &nbsp &nbsp <input type="text" name="txtsub1"><br><br>
+            Subject 2 :&nbsp &nbsp &nbsp <input type="text" name="txtsub2"><br><br>
+            Subject 3 :&nbsp &nbsp &nbsp <input type="text" name="txtsub3"><br><br>
+        </fieldset>
+    </fieldset>
+    <div align="center">
+        <input type="submit" value="Result">
+    </div>
+</form>
+</body>
+</html>
+
+
+
+Student.java
+
+package student.com;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class Student extends HttpServlet {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        int sno, s1, s2, s3, total;
+        String snm, sclass;
+        float per;
+        
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        
+        sno = Integer.parseInt(req.getParameter("txtsno"));
+        snm = req.getParameter("txtnm");
+        sclass = req.getParameter("txtclass");
+        
+        s1 = Integer.parseInt(req.getParameter("txtsub1"));
+        s2 = Integer.parseInt(req.getParameter("txtsub2"));
+        s3 = Integer.parseInt(req.getParameter("txtsub3"));
+        
+        total = s1 + s2 + s3;
+        per = (float) total / 3;
+        
+        out.println("<html><body>");
+        out.print("<h2>Result of student</h2><br>");
+        out.println("<b><i>Roll No :</b></i> " + sno + "<br>");
+        out.println("<b><i>Name :</b></i> " + snm + "<br>");
+        out.println("<b><i>Class :</b></i> " + sclass + "<br>");
+        out.println("<b><i>Subject1 :</b></i> " + s1 + "<br>");
+        out.println("<b><i>Subject2 :</b></i> " + s2 + "<br>");
+        out.println("<b><i>Subject3 :</b></i> " + s3 + "<br>");
+        out.println("<b><i>Total :</b></i> " + total + "<br>");
+        out.println("<b><i>Percentage :</b></i> " + per + "<br>");
+        
+        if (per < 50) {
+            out.println("<h1><i>Pass Class</i></h1>");
+        } else if (per < 55) {
+            out.println("<h1><i>Second Class</i></h1>");
+        } else if (per < 60) {
+            out.println("<h1><i>Higher Class</i></h1>");
+        } else {
+            out.println("<h1><i>First Class</i></h1>");
+        }
+        
+        out.println("</body></html>");
+        out.close();
+    }
+}
+
+
+
+Web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+    <servlet>
+        <description></description>
+        <display-name>Student</display-name>
+        <servlet-name>aaa</servlet-name>
+        <servlet-class>student.com.Student</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>aaa</servlet-name>
+        <url-pattern>/Student</url-pattern>
+    </servlet-mapping>
+    <display-name>PGM9</display-name>
+</web-app>
